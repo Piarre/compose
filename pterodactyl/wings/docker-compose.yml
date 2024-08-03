@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  wings:
+    image: ghcr.io/pterodactyl/wings:v1.11.13
+    # restart: always
+    networks:
+      - proxy
+    ports:
+      - "8080:8080"
+      - "2022:2022"
+      - "446:443"
+    tty: true
+    environment:
+      TZ: "Europe/Paris"
+      WINGS_UID: 988
+      WINGS_GID: 988
+      WINGS_USERNAME: kepa
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/var/lib/docker/containers/:/var/lib/docker/containers/"
+      - "/etc/pterodactyl/:/etc/pterodactyl/"
+      - "/var/lib/pterodactyl/:/var/lib/pterodactyl/"
+      - "/var/log/pterodactyl/:/var/log/pterodactyl/"
+      - "/tmp/pterodactyl/:/tmp/pterodactyl/"
+      - "/etc/ssl/certs:/etc/ssl/certs:ro"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.wings.rule=Host(`node1.piarre.app`)"
+      - "traefik.http.routers.wings.entrypoints=websecure"
+      - "traefik.http.routers.wings.tls.certresolver=myresolver"
+      - "traefik.http.services.wings.loadbalancer.server.port=443"
+
+networks:
+  proxy:
+    external: true
