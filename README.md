@@ -8,5 +8,5 @@ Compose
 # Install Docker
 
 ```bash
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/Piarre/compose/refs/heads/main/docker-install.sh)"
+curl -sSL https://get.docker.com/ | sh
 ```
